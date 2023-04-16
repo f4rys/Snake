@@ -2,17 +2,17 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.Random;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class Panel extends JPanel implements ActionListener {
 
-    static final int SCREEN_WIDTH = 600;
-    static final int SCREEN_HEIGHT = 600;
-    static final int UNIT_SIZE = 25;
-    static final int GAME_UNITS = (SCREEN_WIDTH*SCREEN_HEIGHT)/UNIT_SIZE;
-    static final int DELAY = 75;
+    static final int SCREEN_WIDTH;
+    static final int SCREEN_HEIGHT;
+    static final int UNIT_SIZE;
+    static final int DELAY;
 
-    final int x[] = new int[GAME_UNITS];
-    final int y[] = new int[GAME_UNITS];
     int bodyParts = 6;
     int applesEaten;
     int appleX;
@@ -22,6 +22,24 @@ public class Panel extends JPanel implements ActionListener {
     Timer timer;
     Random random;
 
+    static {
+        Properties prop = new Properties();
+        try (FileInputStream fis = new FileInputStream("config.properties")) {
+            prop.load(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        SCREEN_WIDTH = Integer.parseInt(prop.getProperty("SCREEN_WIDTH"));
+        SCREEN_HEIGHT = Integer.parseInt(prop.getProperty("SCREEN_HEIGHT"));
+        UNIT_SIZE = Integer.parseInt(prop.getProperty("UNIT_SIZE"));
+        DELAY = Integer.parseInt(prop.getProperty("DELAY"));
+    }
+
+    static final int GAME_UNITS = (SCREEN_WIDTH*SCREEN_HEIGHT)/UNIT_SIZE;
+    final int x[] = new int[GAME_UNITS];
+    final int y[] = new int[GAME_UNITS];
+    
     Panel(){
         random = new Random();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
