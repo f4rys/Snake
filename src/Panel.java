@@ -14,6 +14,11 @@ public class Panel extends JPanel implements ActionListener {
     private static final int DELAY;
     private static final int GAME_UNITS;
 
+    private static final Color COLOR_BACKGROUND = Color.black;
+    private static final Color COLOR_APPLE = new Color(204,204,204);
+    private static final Color COLOR_SNAKE = new Color(156,155,155);
+    private static final Color COLOR_TEXT = Color.white;
+
     private int bodyParts = 6;
     private int applesEaten;
     private int appleX;
@@ -45,7 +50,7 @@ public class Panel extends JPanel implements ActionListener {
     public Panel() {
         random = new Random();
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        setBackground(Color.black);
+        setBackground(COLOR_BACKGROUND);
         setFocusable(true);
         addKeyListener(new MyKeyAdapter());
     }
@@ -69,7 +74,7 @@ public class Panel extends JPanel implements ActionListener {
             g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
         }
 
-        g.setColor(Color.white);
+        g.setColor(COLOR_TEXT);
         g.setFont(new Font("Pixeled", Font.BOLD, UNIT_SIZE*2));
         FontMetrics metrics = getFontMetrics(g.getFont());
         String welcome = "SNAKE";
@@ -107,13 +112,13 @@ public class Panel extends JPanel implements ActionListener {
             g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
             g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
         }
-        g.setColor(new Color 	(204,204,204));
+        g.setColor(COLOR_APPLE);
         g.fillRect(appleX, appleY, UNIT_SIZE, UNIT_SIZE);
         for (int i = 0; i < bodyParts; i++) {
-            g.setColor(new Color(156,155,155));
+            g.setColor(COLOR_SNAKE);
             g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
         }
-        g.setColor(Color.white);
+        g.setColor(COLOR_TEXT);
         g.setFont(new Font("Pixeled", Font.BOLD, UNIT_SIZE/2));
         FontMetrics metrics = getFontMetrics(g.getFont());
         String score = "SCORE: " + applesEaten;
@@ -121,7 +126,7 @@ public class Panel extends JPanel implements ActionListener {
     }
 
     private void drawGameOver(Graphics g) {
-        g.setColor(Color.white);
+        g.setColor(COLOR_TEXT);
         g.setFont(new Font("Pixeled", Font.BOLD, UNIT_SIZE + UNIT_SIZE/2));
         FontMetrics metrics1 = getFontMetrics(g.getFont());
         String gameOver = "GAME OVER";
@@ -163,19 +168,20 @@ public class Panel extends JPanel implements ActionListener {
     }
 
     private void checkCollisions() {
-        for (int i = bodyParts; i > 0; i--) {
+        if (x[0] < 0 || x[0] >= SCREEN_WIDTH || y[0] < 0 || y[0] >= SCREEN_HEIGHT) {
+            running = false;
+        }
+        for (int i = 1; i < bodyParts; i++) {
             if (x[0] == x[i] && y[0] == y[i]) {
                 running = false;
+                break;
             }
-        }
-        if (x[0] < 0 || x[0] > SCREEN_WIDTH || y[0] < 0 || y[0] > SCREEN_HEIGHT) {
-            running = false;
         }
         if (!running) {
             timer.stop();
         }
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (running) {
