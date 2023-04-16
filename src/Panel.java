@@ -64,15 +64,20 @@ public class Panel extends JPanel implements ActionListener {
     }
 
     private void showStartScreen(Graphics g) {
+        for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
+            g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
+            g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
+        }
+
         g.setColor(Color.white);
-        g.setFont(new Font("Ink Free", Font.BOLD, 50));
+        g.setFont(new Font("Pixeled", Font.BOLD, UNIT_SIZE*2));
         FontMetrics metrics = getFontMetrics(g.getFont());
-        String welcome = "Welcome to Snake Game";
+        String welcome = "SNAKE";
         g.drawString(welcome, getWidth() / 2 - metrics.stringWidth(welcome) / 2, getHeight() / 2 - metrics.getHeight() / 2);
     
-        g.setFont(new Font("Ink Free", Font.PLAIN, 30));
+        g.setFont(new Font("Pixeled", Font.PLAIN, UNIT_SIZE));
         metrics = getFontMetrics(g.getFont());
-        String startMsg = "Press SPACE to start";
+        String startMsg = "PRESS SPACE TO START";
         g.drawString(startMsg, getWidth() / 2 - metrics.stringWidth(startMsg) / 2, getHeight() / 2 + metrics.getHeight() * 2);
     
         addKeyListener(new KeyAdapter() {
@@ -113,29 +118,33 @@ public class Panel extends JPanel implements ActionListener {
             g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
             g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
         }
-        g.setColor(Color.red);
-        g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE);
+        g.setColor(new Color 	(204,204,204));
+        g.fillRect(appleX, appleY, UNIT_SIZE, UNIT_SIZE);
         for (int i = 0; i < bodyParts; i++) {
-            g.setColor(i == 0 ? Color.green : new Color(45, 180, 0));
+            g.setColor(new Color(156,155,155));
             g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
         }
-        g.setColor(Color.red);
-        g.setFont(new Font("Ink Free", Font.BOLD, 40));
+        g.setColor(Color.white);
+        g.setFont(new Font("Pixeled", Font.BOLD, UNIT_SIZE/2));
         FontMetrics metrics = getFontMetrics(g.getFont());
-        String score = "Score: " + applesEaten;
-        g.drawString(score, getWidth() / 2 - metrics.stringWidth(score) / 2, g.getFont().getSize());
+        String score = "SCORE: " + applesEaten;
+        g.drawString(score, getWidth() / 2 - metrics.stringWidth(score) / 2, g.getFont().getSize() + (UNIT_SIZE/2));
     }
 
     private void drawGameOver(Graphics g) {
-        g.setColor(Color.red);
-        g.setFont(new Font("Ink Free", Font.BOLD, 75));
-        FontMetrics metrics = getFontMetrics(g.getFont());
-        String gameOver = "Game Over";
-        String score = "Score: " + applesEaten;
-        String restartText = "Press SPACE to restart";
-        g.drawString(gameOver, getWidth() / 2 - metrics.stringWidth(gameOver) / 2, getHeight() / 2 - metrics.getHeight() / 2);
-        g.drawString(score, getWidth() / 2 - metrics.stringWidth(score) / 2, getHeight() / 2 + metrics.getHeight() / 2);
-        g.drawString(restartText, getWidth() / 2 - metrics.stringWidth(restartText) / 2, getHeight() / 2 + 2 * metrics.getHeight() / 2);
+        g.setColor(Color.white);
+        g.setFont(new Font("Pixeled", Font.BOLD, UNIT_SIZE + UNIT_SIZE/2));
+        FontMetrics metrics1 = getFontMetrics(g.getFont());
+        String gameOver = "GAME OVER";
+        g.drawString(gameOver, getWidth() / 2 - metrics1.stringWidth(gameOver) / 2, getHeight() / 2 - metrics1.getHeight() / 2);
+
+        g.setFont(new Font("Pixeled", Font.BOLD, UNIT_SIZE/2));
+        FontMetrics metrics2 = getFontMetrics(g.getFont());
+        String score = "SCORE: " + applesEaten;
+        String restartText = "PRESS SPACE TO RESTART";
+        
+        g.drawString(score, getWidth() / 2 - metrics2.stringWidth(score) / 2, getHeight() / 2 + metrics2.getHeight() / 2 );
+        g.drawString(restartText, getWidth() / 2 - metrics2.stringWidth(restartText) / 2, getHeight() / 2 + 2 * metrics2.getHeight() / 2 + UNIT_SIZE);
     }
 
     private void newApple() {
