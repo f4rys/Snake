@@ -79,17 +79,6 @@ public class Panel extends JPanel implements ActionListener {
         metrics = getFontMetrics(g.getFont());
         String startMsg = "PRESS SPACE TO START";
         g.drawString(startMsg, getWidth() / 2 - metrics.stringWidth(startMsg) / 2, getHeight() / 2 + metrics.getHeight() * 2);
-    
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                    removeKeyListener(this);
-                    gameStarted = true;
-                    startGame();
-                }
-            }
-        });
     }
     
     private void startGame() {
