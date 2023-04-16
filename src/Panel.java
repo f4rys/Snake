@@ -20,6 +20,7 @@ public class Panel extends JPanel implements ActionListener {
     private int appleY;
     private char direction = 'R';
     private boolean running;
+    private boolean gameStarted = false;
     private Timer timer;
     private Random random;
 
@@ -47,7 +48,6 @@ public class Panel extends JPanel implements ActionListener {
         setBackground(Color.black);
         setFocusable(true);
         addKeyListener(new MyKeyAdapter());
-        startGame();
     }
 
     private void resetGame() {
@@ -63,10 +63,35 @@ public class Panel extends JPanel implements ActionListener {
         timer.restart();
     }
 
+    private void showStartScreen(Graphics g) {
+        g.setColor(Color.white);
+        g.setFont(new Font("Ink Free", Font.BOLD, 50));
+        FontMetrics metrics = getFontMetrics(g.getFont());
+        String welcome = "Welcome to Snake Game";
+        g.drawString(welcome, getWidth() / 2 - metrics.stringWidth(welcome) / 2, getHeight() / 2 - metrics.getHeight() / 2);
+    
+        g.setFont(new Font("Ink Free", Font.PLAIN, 30));
+        metrics = getFontMetrics(g.getFont());
+        String startMsg = "Press SPACE to start";
+        g.drawString(startMsg, getWidth() / 2 - metrics.stringWidth(startMsg) / 2, getHeight() / 2 + metrics.getHeight() * 2);
+    
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    removeKeyListener(this);
+                    gameStarted = true;
+                    startGame();
+                }
+            }
+        });
+    }
+    
     private void startGame() {
         if (running) return;
         newApple();
         running = true;
+        gameStarted = true;
         timer = new Timer(DELAY, this);
         timer.start();
     }
@@ -74,10 +99,15 @@ public class Panel extends JPanel implements ActionListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (running) drawRunning(g);
-        else drawGameOver(g);
+        if (!gameStarted) {
+            showStartScreen(g);
+        } else if (running) {
+            drawRunning(g);
+        } else {
+            drawGameOver(g);
+        }
     }
-
+    
     private void drawRunning(Graphics g) {
         for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
             g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
@@ -170,7 +200,8 @@ public class Panel extends JPanel implements ActionListener {
             } else if (e.getKeyCode() == KeyEvent.VK_DOWN && direction != 'U') {
                 direction = 'D';
             } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                if (!running) resetGame();
+                if (!gameStarted) startGame();
+                else resetGame();
             }
         }
     }
