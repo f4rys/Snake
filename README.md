@@ -20,6 +20,15 @@
 
 #
 
+## Configuration
+<div>Following values can be configured by user in config.properties file:</div>
+<div>• Window height</div>
+<div>• Window width</div>
+<div>• Unit size (cell size)</div>
+<div>• Delay (game tempo)</div>
+
+#
+
 ## Compilation
 <div>To compile project into standalone .jar file, run these commands in root folder:</div>
 
