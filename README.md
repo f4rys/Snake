@@ -12,13 +12,10 @@
   </p>
 </div>
 
-# 
 
 ## Controls
 <div>• Space for starting new game</div>
 <div>• Arrows for controlling the snake</div>
-
-#
 
 ## Configuration
 <div>Following values can be configured by user in config.properties file:</div>
@@ -27,7 +24,6 @@
 <div>• Unit size (cell size)</div>
 <div>• Delay (game tempo)</div>
 
-#
 
 ## Compilation
 <div>To compile project into standalone .jar file, run these commands in root folder:</div>
@@ -36,9 +32,6 @@
 javac -d bin src/*.java
 jar cfm Snake.jar manifest.txt -C bin . icon.png config.properties
 ```
-
-#
-
 
 ## Credits
 
