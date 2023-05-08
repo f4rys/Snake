@@ -2,9 +2,12 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.Random;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Panel extends JPanel implements ActionListener {
 
@@ -30,9 +33,19 @@ public class Panel extends JPanel implements ActionListener {
     private Random random;
 
     static {
+        Path configFile = Paths.get("config.properties");
         Properties prop = new Properties();
-        try (FileInputStream fis = new FileInputStream("config.properties")) {
-            prop.load(fis);
+
+        try {
+            if (Files.exists(configFile)) {
+                try (InputStream inputStream = Files.newInputStream(configFile)) {
+                    prop.load(inputStream);
+                }
+            } else {
+                try (InputStream inputStream = Panel.class.getResourceAsStream("/config.properties")) {
+                    prop.load(inputStream);
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
