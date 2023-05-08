@@ -20,6 +20,17 @@
 
 #
 
+## Compilation
+<div>To compile project into standalone .jar file, run these commands in root folder:</div>
+
+```
+javac -d bin src/*.java
+jar cfm Snake.jar manifest.txt -C bin . icon.png config.properties
+```
+
+#
+
+
 ## Credits
 
 <div>• Game icon by <a href="https://www.iconfinder.com/konkapp">KonKapp</a> on Iconfinder</div>
